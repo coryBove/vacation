@@ -35,7 +35,8 @@ end
 
 app_map = {
   'html' => 'firefox',
-  'rb' => 'atom'
+  'rb' => 'atom',
+  'md' => 'atom'
 }
 
 launcher = Launcher.new app_map
