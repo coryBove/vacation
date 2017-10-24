@@ -1,4 +1,7 @@
 require './launcher'
+require './launcherx'
+
+ENV['presentWorkingDir'] = Dir.pwd
 
 def help
   print "
@@ -14,11 +17,11 @@ if ARGV.empty?
 end
 
 app_map = {
-  'html' => 'firefox',
+  'html' => 'firefox.exe -new-window',
   'rb' => 'atom',
   'md' => 'atom'
 }
 
 launcher = Launcher.new app_map
-target = ARGV.join ' '
-launcher.run target
+target = ARGV
+launcher.run target[0], target[1]
