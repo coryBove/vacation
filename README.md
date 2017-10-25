@@ -12,4 +12,5 @@ http://neurogami.com/content/neurogami-10_minutes_to_your_first_Ruby_app/
 ### guessingGame.html  
 Following along with this tutorial:  
 https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong  
-(I didn't get very far before getting sidetracked)
+(I didn't get very far before getting sidetracked)  
+Went outside to enjoy sunshine and implement a binary search to guess for me.

@@ -25,36 +25,75 @@
   <body>
       <h1>Number guessing game</h1>
 
-      <p>We have selected a random number between 1 and 100. See if you can guess it in 10 turns or less. We'll tell you if your guess was too high or too low.</p>
+      <p>We have selected a random number between 1 and 100. See if you can guess it in 10 turns or less. We'll tell you if your guess was too high or too low.</p>);
 
 <div class="form">
   <label for="guessField">Enter a guess: </label><input type="text" id="guessField" class="guessField">
   <input type="submit" value="Submit guess" class="guessSubmit">
+  <input type="submit" value="Robitify!" class="robotSubmit">
 </div>
 
 <div class="resultParas">
   <p class="guesses"></p>
   <p class="lastResult"></p>
   <p class="lowOrHi"></p>
+
 </div>
 
 </body>
 
 <script>
-  var randomNumber = Math.floor(Math.random()) + 1;
+  var STARTING_HIGH_CONST = 100000000000000;
+  var STARTING_GUESS_CONST = Math.floor(STARTING_HIGH_CONST / 2);
 
-  var guesses = document.querySelector('.guesses');
+  var MAX_GUESS_CONST = 100;
+
+  var randomNumber = setRandomNumber();
   var lastResult = document.querySelector('.lastResult');
-  var lowOrHi = document.querySelector('lowOrHi');
+  var lowOrHi = document.querySelector('.lowOrHi');
 
   var guessSubmit = document.querySelector('.guessSubmit');
-  var guessField = document.querySelector('.guessField');
+  var robotSubmit = document.querySelector('.robotSubmit');
+  var guesses = document.querySelector('.guesses');
 
   var guessCount = 1;
   var resetButton;
+  var guess = STARTING_GUESS_CONST;
+
+  function setRandomNumber() {
+    return Math.floor(Math.random() * STARTING_HIGH_CONST) + 1;
+  }
+
+  function submitRobotGuess() {
+    console.log('g ' + guess);
+    console.log('r ' + randomNumber);
+    document.querySelector('.guessField').value = guess;
+    document.querySelector('.guessSubmit').click();
+  }
+
+  function robot() {
+    var low = 0;
+    var high = STARTING_HIGH_CONST;
+    guess = STARTING_GUESS_CONST;
+    while(guess !== randomNumber) {
+      submitRobotGuess();
+
+      if(guess < randomNumber) {
+        low = guess;
+        guess = high - Math.floor((high - guess) / 2);
+        console.log('lower');
+      } else if(guess > randomNumber) {
+        high = guess;
+        guess = guess - Math.floor((guess - low) / 2);
+        console.log('higher');
+      }
+    }
+    //FINAL GUESS: THIS WILL SOLVE THE PUZZLE
+    submitRobotGuess();
+  }
+  robotSubmit.addEventListener('click', robot);
 
   function checkGuess() {
-
     var userGuess = Number(guessField.value);
     if(guessCount === 1) {
       guesses.textContent = 'Previous guesses: ';
@@ -62,11 +101,11 @@
     guesses.textContent += userGuess + ' ';
 
     if(userGuess === randomNumber) {
-      lastResult.textContent = 'Congratulations! You got it right!';
+      lastResult.textContent = 'Congratulations! You got it right in ' + guessCount + ' guesses! The random number was ' + randomNumber;
       lastResult.style.backgroundColor = 'green';
       lowOrHi.textContent = '';
       setGameOver();
-    } else if(guessCount === 10) {
+    } else if(guessCount === 100) {
       lastResult.textContent = '!!!GAME OVER!!!';
       setGameOver();
     } else {
@@ -83,7 +122,7 @@
     guessField.value = '';
     guessField.focus();
   }
-  guessSubmit.addeventListener('click', checkGuess);
+  guessSubmit.addEventListener('click', checkGuess);
 
   function setGameOver() {
 	  guessField.disabled = true;
@@ -91,8 +130,10 @@
 	  resetButton = document.createElement('button');
 	  resetButton.textContent = 'Start new game';
 	  document.body.appendChild(resetButton);
-	  resetButton.addeventListener('click', resetGame);
+    resetButton.addEventListener('click', resetGame);
+    resetButton.focus();
   }
+
 
   function resetGame() {
 	  guessCount = 1;
@@ -106,11 +147,14 @@
 	  guessField.disabled = false;
 	  guessSubmit.disabled = false;
 	  guessField.value = '';
-	  guessField.focus();
 
 	  lastResult.style.backgroundColor = 'white';
 
-	  randomNumber = Math.floor(Math.random()) + 1;
+	  randomNumber = setRandomNumber();
+
+    robotSubmit.focus();
   }
+
 </script>
+
 </html>
