@@ -16,14 +16,16 @@ class Html
   end
 
   def do_chrome file, args=nil
-    print file
     path = File.join(ENV['presentWorkingDir'], file)
-    print path
     system "chrome.exe #{path}"
   end
 
   def do_edge file, args=nil
     system "edge #{file} #{args}"
+  end
+
+  def do_atom file, args=nil
+    system "atom #{file}"
   end
 
 end

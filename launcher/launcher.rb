@@ -4,7 +4,8 @@ class Launcher
     @app_map = app_map
   end
 
-  def run file_name
+  def run file_name, args = nil
+    print 'launcer run'
     application = select_app file_name
     system "#{application} #{file_name}"
   end

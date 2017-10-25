@@ -9,7 +9,7 @@ class Launcher
   def build_handler file
     handler = Class.new
     application = select_app file
-    
+
     eval "def handler.run file, args=nil
       system '#{application} \#{file} \#{args}'
     end"
@@ -20,9 +20,11 @@ class Launcher
     begin
       here = File.expand_path (File.dirname __FILE__ )
       ftype = file_type file
+      print ftype
       require "#{here}/handlers/#{ftype}"
       Object.const_get( ftype.capitalize ).new
     rescue Exception
+      print 'hit exception'
       nil
     end
   end
